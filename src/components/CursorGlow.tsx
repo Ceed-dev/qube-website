@@ -18,8 +18,6 @@ const NOISE_SVG =
 const MASK =
   "radial-gradient(circle 300px at var(--mx) var(--my), transparent 0%, transparent 45%, black 92%)";
 
-const CORE = 220;
-
 export default function CursorGlow() {
   const mx = useMotionValue(-9999);
   const my = useMotionValue(-9999);
@@ -27,8 +25,6 @@ export default function CursorGlow() {
   const smy = useSpring(my, { stiffness: 130, damping: 22, mass: 0.6 });
   const mxPx = useTransform(smx, (v) => `${v}px`);
   const myPx = useTransform(smy, (v) => `${v}px`);
-  const coreLeft = useTransform(smx, (v) => v - CORE / 2);
-  const coreTop = useTransform(smy, (v) => v - CORE / 2);
 
   useEffect(() => {
     const move = (e: MouseEvent) => {
@@ -40,47 +36,30 @@ export default function CursorGlow() {
   }, [mx, my]);
 
   return (
-    <>
-      <div aria-hidden className="pointer-events-none fixed inset-0 -z-20 hidden md:block">
-        {/* Hidden layer: sits behind the entire page */}
-        <div
-          className="absolute inset-0"
-          style={{
-            backgroundImage: `radial-gradient(circle, rgba(255,122,47,0.55) 0%, rgba(255,122,47,0.3) 100%), url("${NOISE_SVG}")`,
-            backgroundSize: "cover, 180px 180px",
-            backgroundBlendMode: "soft-light",
-          }}
-        />
-        {/* Page-color scrim with a soft cursor-tracking cutout, revealing the layer above */}
-        <motion.div
-          className="absolute inset-0 bg-bg"
-          style={{
-            // @ts-expect-error -- CSS custom properties via motion values
-            "--mx": mxPx,
-            "--my": myPx,
-            maskImage: MASK,
-            WebkitMaskImage: MASK,
-          }}
-        />
-      </div>
-
-      {/* Inner core: inverts whatever text/content it passes over to white.
-          Positioned via left/top (not transform) so mix-blend-mode isn't
-          isolated into its own stacking context and actually blends with
-          the real page content behind it. */}
-      <motion.div
-        aria-hidden
-        className="pointer-events-none fixed z-40 hidden md:block rounded-full"
+    <div aria-hidden className="pointer-events-none fixed inset-0 -z-20 hidden md:block">
+      {/* Hidden layer: sits behind the entire page, never touches real
+          content. A white-hot center fading to orange gives the "pop"
+          without ever recoloring text — text is never in this layer's
+          stacking path, so legibility can't be affected. */}
+      <div
+        className="absolute inset-0"
         style={{
-          left: coreLeft,
-          top: coreTop,
-          width: CORE,
-          height: CORE,
-          backgroundColor: "#ffffff",
-          mixBlendMode: "difference",
-          filter: "blur(16px)",
+          backgroundImage: `radial-gradient(circle, rgba(255,255,255,0.95) 0%, rgba(255,196,140,0.85) 14%, rgba(255,122,47,0.55) 38%, rgba(255,122,47,0.25) 65%, rgba(255,122,47,0) 100%), url("${NOISE_SVG}")`,
+          backgroundSize: "cover, 180px 180px",
+          backgroundBlendMode: "soft-light",
         }}
       />
-    </>
+      {/* Page-color scrim with a soft cursor-tracking cutout, revealing the layer above */}
+      <motion.div
+        className="absolute inset-0 bg-bg"
+        style={{
+          // @ts-expect-error -- CSS custom properties via motion values
+          "--mx": mxPx,
+          "--my": myPx,
+          maskImage: MASK,
+          WebkitMaskImage: MASK,
+        }}
+      />
+    </div>
   );
 }
