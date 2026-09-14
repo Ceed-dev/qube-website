@@ -29,7 +29,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${inter.variable} font-sans bg-bg text-ink antialiased`}>
+      <body className={`${inter.variable} font-sans text-ink antialiased`}>
         <ScrollProgress />
         <CursorGlow />
         <Nav />

@@ -1,58 +1,62 @@
 "use client";
 
 import { useEffect } from "react";
-import { motion, useMotionValue, useSpring } from "framer-motion";
+import { useMotionValue, useSpring, useTransform, motion } from "framer-motion";
 
 const NOISE_SVG =
   "data:image/svg+xml;utf8," +
   encodeURIComponent(
     `<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'>
       <filter id='n'>
-        <feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/>
-        <feColorMatrix type='saturate' values='0'/>
+        <feTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2' stitchTiles='stitch' result='t'/>
+        <feColorMatrix in='t' type='saturate' values='0'/>
       </filter>
       <rect width='100%' height='100%' filter='url(#n)'/>
     </svg>`
   );
 
-const SIZE = 560;
+const MASK =
+  "radial-gradient(circle 300px at var(--mx) var(--my), transparent 0%, transparent 45%, black 92%)";
 
 export default function CursorGlow() {
-  const x = useMotionValue(-SIZE);
-  const y = useMotionValue(-SIZE);
-  const springX = useSpring(x, { stiffness: 140, damping: 22, mass: 0.6 });
-  const springY = useSpring(y, { stiffness: 140, damping: 22, mass: 0.6 });
+  const mx = useMotionValue(-9999);
+  const my = useMotionValue(-9999);
+  const smx = useSpring(mx, { stiffness: 130, damping: 22, mass: 0.6 });
+  const smy = useSpring(my, { stiffness: 130, damping: 22, mass: 0.6 });
+  const mxPx = useTransform(smx, (v) => `${v}px`);
+  const myPx = useTransform(smy, (v) => `${v}px`);
 
   useEffect(() => {
     const move = (e: MouseEvent) => {
-      x.set(e.clientX);
-      y.set(e.clientY);
+      mx.set(e.clientX);
+      my.set(e.clientY);
     };
     window.addEventListener("mousemove", move);
     return () => window.removeEventListener("mousemove", move);
-  }, [x, y]);
+  }, [mx, my]);
 
   return (
-    <motion.div
-      aria-hidden
-      className="pointer-events-none fixed left-0 top-0 z-30 hidden md:block"
-      style={{ x: springX, y: springY }}
-    >
+    <div aria-hidden className="pointer-events-none fixed inset-0 -z-20 hidden md:block">
+      {/* Hidden layer: sits behind the entire page */}
       <div
-        className="absolute rounded-full"
+        className="absolute inset-0"
         style={{
-          left: -SIZE / 2,
-          top: -SIZE / 2,
-          width: SIZE,
-          height: SIZE,
-          backgroundImage: `radial-gradient(circle, rgba(255,122,47,0.32) 0%, rgba(255,122,47,0.16) 32%, rgba(255,122,47,0.05) 55%, rgba(255,122,47,0) 72%), url("${NOISE_SVG}")`,
-          backgroundBlendMode: "overlay",
-          maskImage:
-            "radial-gradient(circle, black 0%, black 35%, transparent 72%)",
-          WebkitMaskImage:
-            "radial-gradient(circle, black 0%, black 35%, transparent 72%)",
+          backgroundImage: `radial-gradient(circle, rgba(255,122,47,0.9) 0%, rgba(255,122,47,0.55) 100%), url("${NOISE_SVG}")`,
+          backgroundSize: "cover, 180px 180px",
+          backgroundBlendMode: "soft-light",
         }}
       />
-    </motion.div>
+      {/* Page-color scrim with a soft cursor-tracking cutout, revealing the layer above */}
+      <motion.div
+        className="absolute inset-0 bg-bg"
+        style={{
+          // @ts-expect-error -- CSS custom properties via motion values
+          "--mx": mxPx,
+          "--my": myPx,
+          maskImage: MASK,
+          WebkitMaskImage: MASK,
+        }}
+      />
+    </div>
   );
 }
