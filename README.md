@@ -35,16 +35,18 @@ To wire them up:
 
 ## Deploy
 
-Currently deployed (Vercel, `gamer-tech-coder` personal account) at:
-https://qube-physical-ai.vercel.app
+Production: **https://www.0xqube.xyz** (`0xqube.xyz` redirects to `www` with a 308).
 
-This is **not** yet the production domain. `0xqube.xyz` is live under a
-different Vercel account/team with old content ("QUBE | Train AI on Asia")
-that this session didn't have access to. To cut over:
+Hosted on Vercel under the **Ceed** team, project `qube-website`, connected to
+this GitHub repository (`Ceed-dev/qube-website`):
 
-1. Either add `0xqube.xyz` as a custom domain to the `qube-physical-ai`
-   project in this Vercel account (requires updating the domain's DNS/nameservers
-   to point at Vercel), or deploy this repo under whichever Vercel
-   account/team currently owns `0xqube.xyz` and add the domain there.
-2. Set the Formspree env vars in the new project before/while cutting over,
-   so the forms work immediately on the live domain.
+- Push to `main` → automatic production deploy to `www.0xqube.xyz`.
+- Push to any other branch / open a PR → automatic preview deploy.
+- Fallback production alias: https://qube-website-self.vercel.app
+
+The domain `0xqube.xyz` is registered and DNS-managed in Vercel (Ceed team).
+Other subdomains (`quest.`, `web.`, `mod.`, `docs.`, mail records, etc.) belong
+to separate projects/services and are unaffected by deploys of this repo.
+
+Environment variables (Formspree / Calendly, see [Forms](#forms)) are set in the
+Vercel project's Environment Variables settings — redeploy after changing them.
