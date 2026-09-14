@@ -32,23 +32,6 @@ export default function Footer() {
             </Link>
           ))}
         </nav>
-
-        <div className="flex items-center gap-3 text-muted">
-          <span>Srijan</span>
-          <span>·</span>
-          <a href="mailto:ldrago@0xqube.xyz" className="hover:text-orange transition-colors">
-            ldrago@0xqube.xyz
-          </a>
-          <span>·</span>
-          <a
-            href="https://twitter.com/Srijan0x"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="hover:text-orange transition-colors"
-          >
-            @Srijan0x
-          </a>
-        </div>
       </Reveal>
     </footer>
   );

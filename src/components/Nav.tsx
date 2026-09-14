@@ -51,9 +51,7 @@ export default function Nav() {
                 key={link.href}
                 href={link.href}
                 className={`text-sm font-medium px-3 py-1.5 rounded-full transition-colors duration-200 ${
-                  active
-                    ? "text-orange bg-orange-light"
-                    : "text-ink/80 hover:text-white hover:bg-orange"
+                  active ? "text-orange bg-orange-light" : "text-ink/80 hover:text-white"
                 }`}
               >
                 {link.label}
@@ -99,9 +97,7 @@ export default function Nav() {
                     key={link.href}
                     href={link.href}
                     className={`text-sm font-medium px-3 py-2 -mx-3 rounded-lg transition-colors ${
-                      active
-                        ? "text-orange bg-orange-light"
-                        : "text-ink/80 hover:text-white hover:bg-orange"
+                      active ? "text-orange bg-orange-light" : "text-ink/80 hover:text-white"
                     }`}
                   >
                     {link.label}
