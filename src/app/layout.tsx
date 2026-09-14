@@ -1,6 +1,10 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import Nav from "@/components/Nav";
+import Footer from "@/components/Footer";
+import ScrollProgress from "@/components/ScrollProgress";
+import PageTransition from "@/components/PageTransition";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -9,7 +13,10 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Qube — India's Physical AI Data Collection Company",
+  title: {
+    default: "Qube — India's Physical AI Data Collection Company",
+    template: "%s — Qube",
+  },
   description:
     "Task-specific, consent-clean egocentric data from real manufacturing environments in India. Built for robotics and embodied AI.",
 };
@@ -22,7 +29,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${inter.variable} font-sans bg-bg text-ink antialiased`}>
-        {children}
+        <ScrollProgress />
+        <Nav />
+        <PageTransition>
+          <main>{children}</main>
+        </PageTransition>
+        <Footer />
       </body>
     </html>
   );

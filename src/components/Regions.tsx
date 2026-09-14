@@ -1,3 +1,4 @@
+import Reveal, { StaggerGroup, StaggerItem } from "./motion/Reveal";
 import SectionLabel from "./SectionLabel";
 
 const regions = [
@@ -23,12 +24,17 @@ const regions = [
 
 export default function Regions() {
   return (
-    <section id="regions" className="py-24 px-6 bg-white border-b border-divider">
+    <section className="py-24 px-6 bg-white">
       <div className="max-w-5xl mx-auto">
-        <SectionLabel>Regions</SectionLabel>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <Reveal>
+          <SectionLabel>Regions</SectionLabel>
+        </Reveal>
+        <StaggerGroup className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {regions.map((r) => (
-            <div key={r.name} className="border border-divider rounded-xl p-7">
+            <StaggerItem
+              key={r.name}
+              className="border border-divider rounded-xl p-7 transition-all duration-300 hover:border-orange/40 hover:-translate-y-1 hover:shadow-lg hover:shadow-ink/5"
+            >
               <span
                 className={`inline-block text-xs font-semibold uppercase tracking-wide px-3 py-1 rounded-full mb-4 ${r.statusColor}`}
               >
@@ -36,9 +42,9 @@ export default function Regions() {
               </span>
               <p className="font-bold text-lg text-ink mb-2">{r.name}</p>
               <p className="text-muted leading-relaxed text-sm">{r.desc}</p>
-            </div>
+            </StaggerItem>
           ))}
-        </div>
+        </StaggerGroup>
       </div>
     </section>
   );

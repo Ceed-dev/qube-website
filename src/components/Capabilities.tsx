@@ -1,4 +1,6 @@
-import SectionLabel from "./SectionLabel";
+"use client";
+
+import { motion } from "framer-motion";
 
 const rows = [
   {
@@ -18,20 +20,23 @@ const rows = [
 
 export default function Capabilities() {
   return (
-    <section id="capabilities" className="py-24 px-6 border-b border-divider">
+    <section className="py-24 px-6 border-b border-divider">
       <div className="max-w-4xl mx-auto">
-        <SectionLabel>Capabilities</SectionLabel>
         <div className="border border-divider rounded-xl overflow-hidden">
           {rows.map((row, i) => (
-            <div
+            <motion.div
               key={row.label}
+              initial={{ opacity: 0, x: -20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true, margin: "-60px" }}
+              transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1], delay: i * 0.1 }}
               className={`flex flex-col md:flex-row md:items-center gap-2 md:gap-8 px-6 py-6 ${
                 i % 2 === 1 ? "bg-orange-light/40" : "bg-white"
               } ${i !== rows.length - 1 ? "border-b border-divider" : ""}`}
             >
               <p className="font-bold text-ink w-full md:w-40 shrink-0">{row.label}</p>
               <p className="text-muted leading-relaxed">{row.value}</p>
-            </div>
+            </motion.div>
           ))}
         </div>
       </div>
