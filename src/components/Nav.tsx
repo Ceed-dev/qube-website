@@ -43,23 +43,20 @@ export default function Nav() {
           <Logo variant="ink" size={26} />
         </Link>
 
-        <nav className="hidden md:flex items-center gap-8">
+        <nav className="hidden md:flex items-center gap-1">
           {links.map((link) => {
             const active = pathname === link.href;
             return (
               <Link
                 key={link.href}
                 href={link.href}
-                className="relative text-sm font-medium text-ink/80 hover:text-orange transition-colors py-1"
+                className={`text-sm font-medium px-3 py-1.5 rounded-full transition-colors duration-200 ${
+                  active
+                    ? "text-orange bg-orange-light"
+                    : "text-ink/80 hover:text-white hover:bg-orange"
+                }`}
               >
                 {link.label}
-                {active && (
-                  <motion.span
-                    layoutId="nav-underline"
-                    className="absolute left-0 right-0 -bottom-[1px] h-[2px] bg-orange rounded-full"
-                    transition={{ type: "spring", stiffness: 380, damping: 30 }}
-                  />
-                )}
               </Link>
             );
           })}
@@ -94,16 +91,23 @@ export default function Nav() {
             transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
             className="md:hidden overflow-hidden border-t border-divider bg-bg"
           >
-            <div className="px-6 py-4 flex flex-col gap-4">
-              {links.map((link) => (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  className="text-sm font-medium text-ink/80 hover:text-orange transition-colors"
-                >
-                  {link.label}
-                </Link>
-              ))}
+            <div className="px-6 py-4 flex flex-col gap-1">
+              {links.map((link) => {
+                const active = pathname === link.href;
+                return (
+                  <Link
+                    key={link.href}
+                    href={link.href}
+                    className={`text-sm font-medium px-3 py-2 -mx-3 rounded-lg transition-colors ${
+                      active
+                        ? "text-orange bg-orange-light"
+                        : "text-ink/80 hover:text-white hover:bg-orange"
+                    }`}
+                  >
+                    {link.label}
+                  </Link>
+                );
+              })}
             </div>
           </motion.nav>
         )}
