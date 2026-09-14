@@ -1,36 +1,50 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Qube Website
 
-## Getting Started
+Marketing site for Qube — India's physical AI data collection company.
+Built per `Qube/projects/website/context.md`. Next.js 14 (App Router) + Tailwind CSS.
 
-First, run the development server:
+## Development
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Forms
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Both forms (`#partner`, `#contributor`) post to Formspree and are wired to read
+endpoint URLs from env vars — see `.env.local.example`:
 
-## Learn More
+```
+NEXT_PUBLIC_FORMSPREE_PARTNER_ENDPOINT=https://formspree.io/f/xxxxxxxx
+NEXT_PUBLIC_FORMSPREE_CONTRIBUTOR_ENDPOINT=https://formspree.io/f/yyyyyyyy
+NEXT_PUBLIC_CALENDLY_URL=  # optional, falls back to mailto:ldrago@0xqube.xyz
+```
 
-To learn more about Next.js, take a look at the following resources:
+Until these are set, submitting either form shows an inline error pointing
+people to email ldrago@0xqube.xyz directly — nothing is silently lost.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+To wire them up:
+1. Create a free account at [formspree.io](https://formspree.io).
+2. Create two forms, both delivering to `ldrago@0xqube.xyz`.
+3. Copy `.env.local.example` to `.env.local` and paste in the two endpoint URLs.
+4. Add the same three variables in the Vercel project's Environment Variables
+   settings, then redeploy.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Deploy
 
-## Deploy on Vercel
+Currently deployed (Vercel, `gamer-tech-coder` personal account) at:
+https://qube-physical-ai.vercel.app
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+This is **not** yet the production domain. `0xqube.xyz` is live under a
+different Vercel account/team with old content ("QUBE | Train AI on Asia")
+that this session didn't have access to. To cut over:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+1. Either add `0xqube.xyz` as a custom domain to the `qube-physical-ai`
+   project in this Vercel account (requires updating the domain's DNS/nameservers
+   to point at Vercel), or deploy this repo under whichever Vercel
+   account/team currently owns `0xqube.xyz` and add the domain there.
+2. Set the Formspree env vars in the new project before/while cutting over,
+   so the forms work immediately on the live domain.
