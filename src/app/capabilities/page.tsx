@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import PageHeader from "@/components/PageHeader";
 import Capabilities from "@/components/Capabilities";
+import DataNetwork from "@/components/DataNetwork";
 import Regions from "@/components/Regions";
 
 export const metadata: Metadata = {
@@ -18,6 +19,7 @@ export default function CapabilitiesPage() {
         description="Fast starts, real volume, and coverage across every major Indian language — with more regions coming online."
       />
       <Capabilities />
+      <DataNetwork />
       <Regions />
     </>
   );
